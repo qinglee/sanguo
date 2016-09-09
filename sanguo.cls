@@ -66,10 +66,10 @@
   }
   { \ctexset { declarecharrange = { Ext-B } { "20000 -> "2A6DF } } }
 \defaultCJKfontfeatures { Script = CJK }
-\setCJKmainfont [ ItalicFont = DFKaiShu ~ Std ~ W5 ,
-                  BoldFont = DFMing ~ Std ~ W9 ]     { DFMing ~ Std ~ W5 }
-\setCJKsansfont [ BoldFont = DFHei ~ Std ~ W9 ]      { DFHei ~ Std ~ W5 }
-\setCJKmonofont [ BoldFont = DFFangSong ~ Std ~ W6 ] { DFFangSong ~ Std ~ W4 }
+\setCJKmainfont [ ItalicFont = DFPKaiShuW3-B5 ,
+                  BoldFont = DFPNMingXBold-B5 ] { DFPMingLight-B5 }
+\setCJKsansfont [ BoldFont = DFPNHeiXBold-B5 ]  { DFPHeiMedium-B5 }
+\setCJKmonofont [ BoldFont = DFPFangSongW6-B5 ] { DFPFangSongW4-B5 }
 \setCJKmainfont [ Ext-B ] { PMingLiU-ExtB }
 \group_begin:
   \tl_clear:N \l_tmpa_tl
