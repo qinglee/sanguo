@@ -118,7 +118,7 @@
 \box_new:N \l_@@_head_rule_box
 \vbox_set_top:Nn \l_@@_head_rule_box
   {
-    \medskip
+    \skip_vertical:N \medskipamount
     \tex_hrule:D width \textwidth depth .5pt height \c_zero_dim \scan_stop:
   }
 \pagestyle { main }
@@ -131,7 +131,7 @@
       format      = \bfseries \Large ,
       nameformat  = \@@_name_format:n ,
       aftername   = \par \nointerlineskip \@@_head_rule:
-                    \par \bigskip \nointerlineskip ,
+                    \par \skip_vertical:N \bigskipamount ,
       titleformat = \@@_title_box:n ,
       beforeskip  = \bigskipamount ,
       afterskip   = \baselineskip + \bigskipamount ,
@@ -232,11 +232,10 @@
     \group_begin:
       \ctexset
         {
-          chapter/aftertitle+ =
-            {
-              \chaptermark { \contentsname }
-              \bookmark [ level = chapter , dest = \@currentHref ] { \contentsname }
-            }
+          chapter/aftertitle+ = {
+            \chaptermark { \contentsname }
+            \bookmark [ level = chapter , dest = \@currentHref ] { \contentsname }
+          }
         }
       \chapter * { \contentsname }
       \AtBeginShipout { \@@_set_toc_label_width: }
