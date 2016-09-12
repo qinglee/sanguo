@@ -62,15 +62,16 @@
         AutoFakeBold            = false ,
         AutoFakeSlant           = false ,
       }
-    \xeCJKDeclareSubCJKBlock { Ext-B } { "20000 -> "2A6DF }
+    \xeCJKDeclareSubCJKBlock { Ext } { "20000 -> "2CEA1 }
   }
-  { \ctexset { declarecharrange = { Ext-B } { "20000 -> "2A6DF } } }
+  { \ctexset { declarecharrange = { Ext } { "20000 -> "2CEA1 } } }
 \defaultCJKfontfeatures { Script = CJK }
 \setCJKmainfont [ ItalicFont = DFPKaiShuW3-B5 ,
                   BoldFont = DFPNMingXBold-B5 ] { DFPMingLight-B5 }
 \setCJKsansfont [ BoldFont = DFPNHeiXBold-B5 ]  { DFPHeiMedium-B5 }
 \setCJKmonofont [ BoldFont = DFPFangSongW6-B5 ] { DFPFangSongW4-B5 }
-\setCJKmainfont [ Ext-B ] { PMingLiU-ExtB }
+\setCJKmainfont [ Ext , ItalicFont = FZKaiT-Extended(SIP) ] { PMingLiU-ExtB }
+\setCJKmonofont [ Ext ] { ZHZKFangSong-ExtB }
 \group_begin:
   \tl_clear:N \l_tmpa_tl
   \int_step_inline:nnnn { 1 } { 1 } { 9 }
@@ -161,19 +162,19 @@
       { \raggedright }
       { \raggedleft }
   }
-\cs_new_eq:NN \sanguo@saved@contentsline \contentsline
+\cs_new_eq:NN \@@_saved_contentsline:nnnn \contentsline
 \RenewDocumentCommand \contentsline { m }
   {
-    \cs_if_exist_use:cF { sanguo@toc@#1 }
-      { \sanguo@saved@contentsline {#1} }
+    \cs_if_exist_use:cF { @@_toc_#1:nnn }
+      { \@@_saved_contentsline:nnnn {#1} }
   }
-\cs_new_protected:Npn \sanguo@toc@chapter
+\cs_new_protected_nopar:Npn \@@_toc_chapter:nnn
   {
     \int_compare:nNnTF { \value { tocdepth } } > \c_minus_one
-      { \@@_toc_chapter:nnn }
+      { \@@_toc_chapter_aux:nnn }
       { \use_none:nnn }
   }
-\cs_new_protected:Npn \@@_toc_chapter:nnn #1
+\cs_new_protected:Npn \@@_toc_chapter_aux:nnn #1
   { \@@_toc_chapter_aux:w #1 \q_stop }
 \cs_new_protected:Npn \@@_toc_chapter_aux:w \numberline #1 #2 ^^^^3000 #3 \q_stop
   { \@@_toc_chapter:nnnnn {#1} {#2} {#3} }
@@ -220,7 +221,7 @@
     \seq_gput_right:Nx \g_@@_toc_seq { \dim_eval:n { \box_wd:N \l_tmpa_box } }
     \int_gincr:N \g_@@_toc_int
     \@@_toc_mark:n { \int_use:N \g_@@_toc_int }
-    \zref@labelbylist {#2} { sanguo@toc }
+    \zref@labelbylist {#2} { toc@label }
     \quad
   }
 \int_new:N \g_@@_toc_int
@@ -229,15 +230,11 @@
   { \etex_marks:D \g_@@_toc_label_mark {#1} }
 \RenewDocumentCommand \tableofcontents { }
   {
+    \clearpage
     \group_begin:
-      \ctexset
-        {
-          chapter/aftertitle+ = {
-            \chaptermark { \contentsname }
-            \bookmark [ level = chapter , dest = \@currentHref ] { \contentsname }
-          }
-        }
-      \chapter * { \contentsname }
+      \cs_set_eq:NN \addtocontents \use_none:nn
+      \@mainmatterfalse
+      \chapter { \contentsname }
       \AtBeginShipout { \@@_set_toc_label_width: }
       \@starttoc { toc }
       \AtBeginShipoutNext { \tl_gclear:N \@@_set_toc_label_width: }
@@ -250,7 +247,7 @@
       { \etex_firstmarks:D \g_@@_toc_label_mark }
       { \@@_set_toc_label_width_aux: }
   }
-\cs_new_protected:Npn \@@_set_toc_label_width_aux:
+\cs_new_protected_nopar:Npn \@@_set_toc_label_width_aux:
   {
     \tl_gset:Nn \g_@@_toc_label_width_tl { 0pt }
     \int_step_inline:nnnn
@@ -269,8 +266,8 @@
 \newmarks \g_@@_toc_label_mark
 \tl_new:N \g_@@_toc_label_width_tl
 \zref@newprop * { label@width } [ 0pt ] { \g_@@_toc_label_width_tl }
-\zref@newlist { sanguo@toc }
-\zref@addprop { sanguo@toc } { label@width }
+\zref@newlist { toc@label }
+\zref@addprop { toc@label } { label@width }
 \RenewDocumentEnvironment { quote } { }
   {
     \list { }
